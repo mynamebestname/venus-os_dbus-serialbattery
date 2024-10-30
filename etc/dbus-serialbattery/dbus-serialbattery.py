@@ -56,7 +56,7 @@ supported_bms_types = [
     {"bms": Renogy, "baud": 9600, "address": b"\xF7"},
     {"bms": Seplos, "baud": 19200, "address": b"\x00"},
     {"bms": Seplosv3, "baud": 19200},
-    {"bms": SamsungELPM482, "baud": 9600, "address": b"\x01"},
+    {"bms": SamsungELPM482, "baud": 9600,},
 ]
 
 # enabled only if explicitly set in config under "BMS_TYPE"
