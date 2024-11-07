@@ -467,7 +467,7 @@ class Battery(ABC):
             # limit soc_calc_capacity_remain to capacity and zero
             # in case 100% is reached and the battery is not fully charged
             # in case 0% is reached and the battery is not fully discharged
-            self.soc_calc_capacity_remain = round(max(min(self.soc_calc_capacity_remain, self.capacity), 0), 3)
+            self.soc_calc_capacity_remain = max(min(self.soc_calc_capacity_remain, self.capacity), 0)
             self.soc_calc_capacity_remain_lasttime = current_time
 
             # execute checks only if one cell reaches max voltage
@@ -524,7 +524,7 @@ class Battery(ABC):
             self.soc_calc_capacity_remain_lasttime = current_time
 
         # calculate the SOC based on remaining capacity
-        self.soc_calc = round(max(min((self.soc_calc_capacity_remain / self.capacity) * 100, 100), 0), 2)
+        self.soc_calc = round(max(min((self.soc_calc_capacity_remain / self.capacity) * 100, 100), 0), 3)
 
     def soc_reset_voltage_management(self) -> None:
         """

@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+# Notes
+# Updated by https://github.com/idstein
+
 from battery import Protection, Battery, Cell
 from utils import (
     bytearray_to_string,

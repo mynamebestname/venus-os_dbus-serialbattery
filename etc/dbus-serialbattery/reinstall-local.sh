@@ -60,18 +60,18 @@ fi
 # check if minimum required Venus OS is installed | end
 
 
-# check if at least 8 MB free space is available on the system partition
+# check if at least 28 MB free space is available on the system partition
 freeSpace=$(df -m / | awk 'NR==2 {print $4}')
-if [ $freeSpace -lt 8 ]; then
+if [ $freeSpace -lt 28 ]; then
 
     # try to expand system partition
     bash /opt/victronenergy/swupdate-scripts/resize2fs.sh
 
     freeSpace=$(df -m / | awk 'NR==2 {print $4}')
-    if [ $freeSpace -lt 8 ]; then
+    if [ $freeSpace -lt 28 ]; then
         echo
         echo
-        echo "ERROR: Not enough free space on the system partition. At least 8 MB are required."
+        echo "ERROR: Not enough free space on the system partition. At least 28 MB are required."
         echo
         echo "       Please please try to execute this command"
         echo

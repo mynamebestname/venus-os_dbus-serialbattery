@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+# Notes
+# Updated by https://github.com/mr-manuel
+
 from battery import Battery, Cell
 from utils import bytearray_to_string, is_bit_set, read_serial_data, logger, ZERO_CHAR
 from struct import unpack_from

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+# Notes
+# Added by https://github.com/baranator
+# https://github.com/Louisvdw/dbus-serialbattery/pull/372
+# Updated by https://github.com/mr-manuel
+
 from struct import unpack_from, calcsize
 from bleak import BleakScanner, BleakClient, exc
 from time import sleep, time

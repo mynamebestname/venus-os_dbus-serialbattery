@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+# Notes
+# Updated by https://github.com/peterohman
+
 from battery import Battery, Cell
 from utils import logger
 import serial

@@ -19,7 +19,7 @@ RETRYCNT = 3
 class Seplosv3(Battery):
     def __init__(self, port, baud, address):
         super(Seplosv3, self).__init__(port, baud, address)
-        self.type = "Seplosv3_BMS_modbus"
+        self.type = "Seplos v3"
         self.serialnumber = ""
         self.mbdev: Union[minimalmodbus.Instrument, None] = None
         if address is not None and len(address) > 0:
