@@ -1,123 +1,137 @@
-# config_samsung_elpm482.py
-# Configuration for Samsung ELPM482-00005 battery for use with venus-os_dbus-serialbattery
+# samsung_elpm482.py
+# BMS class implementation for Samsung ELPM482-00005 battery in a 3-battery parallel setup
 
-from dbus_venetion.serialbattery import Battery
+from .battery import Battery
+from utils import read_modbus_register, read_can_value
+import struct
 
 class SamsungELPM482(Battery):
-    def __init__(self):
-        super().__init__()
-        self.battery_name = "Samsung_ELPM482"
-        self.port = "/dev/ttyUSB0"  # Adjust as needed
-        self.baudrate = 9600
-        self.data_format = "8N1"
-        self.polling_interval = 1000  # in milliseconds
+    def __init__(self, port, baudrate=9600, data_format="8N1"):
+        super().__init__(port, baudrate, data_format)
+        
+        self.type = "Samsung_ELPM482"
+        self.capacity = 14.52  # Total capacity in kWh for 3 batteries in parallel (4.84 kWh each)
+        self.voltage = None
+        self.current = None
+        self.soc = None
+        self.soh = None
+        self.alarm_status = None
+        self.protection_status = None
 
-        # Define Modbus mappings
-        self.parameters = {
-            "system_heartbeat": 0x040000,
-            "comm_protocol_version": 0x040001,
-            "system_voltage": 0x040002,
-            "system_current": 0x040003,
-            "system_soc": 0x040004,
-            "system_soh": 0x040005,
-            "system_alarm_status": 0x040006,
-            "system_protection_status": 0x040007,
-            "total_trays": 0x040008,
-            "normal_trays": 0x040009,
-            "fault_trays": 0x04000A,
-            "battery_charge_voltage": 0x04000B,
-            "battery_discharge_voltage": 0x04000C,
-            "system_charge_current_limit": 0x04000D,
-            "system_discharge_current_limit": 0x04000E,
-            "avg_tray_voltage": 0x04000F,
-            "max_tray_voltage": 0x040010,
-            "max_tray_voltage_position": 0x040011,
-            "min_tray_voltage": 0x040012,
-            "min_tray_voltage_position": 0x040013,
-            "avg_cell_voltage": 0x040014,
-            "max_cell_voltage": 0x040015,
-            "max_cell_voltage_position": 0x040016,
-            "min_cell_voltage": 0x040017,
-            "min_cell_voltage_position": 0x040018,
-            "avg_cell_temperature": 0x040019,
-            "max_cell_temperature": 0x04001A,
-            "max_cell_temp_position": 0x04001B,
-            "min_cell_temperature": 0x04001C,
-            "min_cell_temp_position": 0x04001D,
+        # Modbus register mappings for key parameters
+        self.modbus_parameters = {
+            "voltage": (0x040002, "U16", 0.01),
+            "current": (0x040003, "S16", 1),
+            "soc": (0x040004, "U16", 1),
+            "soh": (0x040005, "U16", 1),
+            "alarm_status": (0x040006, "U16", 1),
+            "protection_status": (0x040007, "U16", 1),
+        }
+        
+        # Optional CAN frame mappings (if needed)
+        self.can_parameters = {
+            "voltage": (0x500, 0, "U16", 0.01),
+            "current": (0x500, 2, "S16", 1),
+            "soc": (0x500, 4, "U8", 1),
+            "soh": (0x500, 5, "U8", 1),
+            "alarm_status": (0x501, 0, "U16", 1),
+            "protection_status": (0x501, 2, "U16", 1),
         }
 
-        # Tray-level parameters
-        self.tray_parameters = {
-            "tray_heartbeat": 0x040064,
-            "tray_voltage": 0x040065,
-            "cell_voltage_sum": 0x040066,
-            "tray_current": 0x040067,
-            "tray_soc": 0x040068,
-            "tray_soh": 0x040069,
-            "tray_alarm_status": 0x04006A,
-            "tray_protection_status": 0x04006B,
-            "tray_charge_current_limit": 0x04006C,
-            "tray_discharge_current_limit": 0x04006D,
-            "avg_tray_cell_voltage": 0x04006E,
-            "max_tray_cell_voltage": 0x04006F,
-            "min_tray_cell_voltage": 0x040070,
-            "avg_tray_cell_temperature": 0x040071,
-            "max_tray_cell_temperature": 0x040072,
-            "min_tray_cell_temperature": 0x040073,
-            "fet_temperature": 0x040074,
-            "precharge_resistor_temperature": 0x040075,
-            "tray_switch_status": 0x040076,
-        }
+    def test_connection(self):
+        """Tests connectivity to the battery by reading the voltage parameter."""
+        try:
+            voltage = self.get_voltage()
+            if voltage is not None:
+                print(f"Connection successful. Voltage: {voltage} V")
+                return True
+            else:
+                print("Failed to read voltage. Connection may not be established.")
+                return False
+        except Exception as e:
+            print(f"Connection test failed with error: {e}")
+            return False
+    
+    def refresh_data(self):
+        """Reads and updates all key battery parameters."""
+        self.voltage = self.get_voltage()
+        self.current = self.get_current()
+        self.soc = self.get_soc()
+        self.soh = self.get_soh()
+        self.alarm_status = self.get_alarm_status()
+        self.protection_status = self.get_protection_status()
 
-        # Individual cell voltages within tray
-        self.cell_voltages = {
-            f"cell_voltage_{i+1}": 0x040077 + i for i in range(14)
-        }
-
-        # Define CAN mappings if necessary
-        self.can_mappings = {
-            "system_voltage": (0x500, 0, "U16", 0.01),
-            "system_current": (0x500, 2, "S16", 1),
-            "system_soc": (0x500, 4, "U8", 1),
-            "system_soh": (0x500, 5, "U8", 1),
-            "system_heartbeat": (0x500, 6, "U16", 1),
-            "system_alarm_status": (0x501, 0, "U16", 1),
-            "system_protection_status": (0x501, 2, "U16", 1),
-            "total_trays": (0x501, 4, "U8", 1),
-            "normal_trays": (0x501, 5, "U8", 1),
-            "fault_trays": (0x501, 6, "U8", 1),
-            "battery_charge_voltage": (0x502, 0, "U16", 0.1),
-            "charge_current_limit": (0x502, 2, "U16", 0.1),
-            "discharge_current_limit": (0x502, 4, "U16", 0.1),
-            "battery_discharge_voltage": (0x502, 6, "U16", 0.1),
-            "avg_cell_voltage": (0x503, 0, "U16", 0.001),
-            "max_cell_voltage": (0x503, 2, "U16", 0.001),
-            "min_cell_voltage": (0x503, 4, "U16", 0.001),
-            "avg_tray_voltage": (0x503, 6, "U16", 0.01),
-            "max_tray_voltage": (0x504, 0, "U16", 0.01),
-            "min_tray_voltage": (0x504, 2, "U16", 0.01),
-            "avg_cell_temperature": (0x504, 4, "S8", 1),
-            "max_cell_temperature": (0x504, 5, "S8", 1),
-            "min_cell_temperature": (0x504, 6, "S8", 1),
-        }
-
-    def read_parameter(self, param):
-        """Example function to read a Modbus or CAN parameter."""
-        if param in self.parameters:
-            register = self.parameters[param]
-            return self.read_modbus_register(register)
-        elif param in self.can_mappings:
-            frame_id, byte_offset, dtype, scale = self.can_mappings[param]
-            return self.read_can_frame(frame_id, byte_offset, dtype, scale)
+    def read_value(self, param):
+        """Reads a parameter value by Modbus or CAN, based on configuration."""
+        if param in self.modbus_parameters:
+            register, data_type, scale = self.modbus_parameters[param]
+            return read_modbus_register(self.port, register, data_type, scale)
+        elif param in self.can_parameters:
+            frame_id, byte_offset, data_type, scale = self.can_parameters[param]
+            return read_can_value(self.port, frame_id, byte_offset, data_type, scale)
         else:
+            print(f"Parameter {param} not found.")
             return None
 
-    def read_modbus_register(self, register):
-        """Stub method for reading Modbus register (replace with actual implementation)."""
-        # Implementation code goes here
-        pass
+    def get_max_battery_voltage(self):
+        """Returns maximum battery voltage for Samsung ELPM482."""
+        return 58.1  # Maximum charge voltage for the battery system
 
-    def read_can_frame(self, frame_id, byte_offset, dtype, scale):
-        """Stub method for reading CAN frame (replace with actual implementation)."""
-        # Implementation code goes here
-        pass
+    def get_min_battery_voltage(self):
+        """Returns minimum battery voltage for Samsung ELPM482."""
+        return 44.8  # Minimum safe discharge voltage for the battery system
+
+    def get_capacity(self):
+        """Returns the capacity of the battery system in kWh."""
+        return self.capacity
+
+    def get_voltage(self):
+        """Returns the current voltage of the battery."""
+        return self.read_value("voltage")
+    
+    def get_current(self):
+        """Returns the current flowing in/out of the battery."""
+        return self.read_value("current")
+
+    def get_soc(self):
+        """Returns the State of Charge (SOC) of the battery."""
+        return self.read_value("soc")
+
+    def get_soh(self):
+        """Returns the State of Health (SOH) of the battery."""
+        return self.read_value("soh")
+
+    def get_temperature(self):
+        """Returns the average cell temperature of the battery."""
+        return self.read_value("temperature")  # Replace "temperature" with actual parameter if needed
+
+    def get_charge_voltage(self):
+        """Returns the recommended charge voltage of the battery."""
+        return 54.6  # Nominal charge voltage per battery (assumed; replace if specified differently)
+
+    def get_discharge_voltage(self):
+        """Returns the minimum discharge voltage of the battery."""
+        return 44.8  # Discharge cutoff voltage for the battery system
+
+    def get_alarm_status(self):
+        """Returns the alarm status of the battery."""
+        return self.read_value("alarm_status")
+
+    def get_protection_status(self):
+        """Returns the protection status of the battery."""
+        return self.read_value("protection_status")
+    
+    def get_max_charge_current(self):
+        """Returns maximum allowable charge current for the battery system."""
+        return 141  # Approx. max charge current for 3 batteries in parallel at optimal temperature
+
+    def get_max_discharge_current(self):
+        """Returns maximum allowable discharge current for the battery system."""
+        return 150  # Max discharge current for 3 batteries in parallel
+
+    def to_percentage(self, value, max_value):
+        """Utility method to convert a raw value to a percentage of max value."""
+        if max_value > 0:
+            return (value / max_value) * 100
+        else:
+            return 0
