@@ -19,14 +19,14 @@ class SamsungELPM482(Battery):
         self.max_charge_current = 141  # 47A per battery × 3
         self.max_discharge_current = 150  # Max discharge current for 3 batteries
 
-        # Modbus register mappings based on the manual
+        # Modbus register mappings without divisors
         self.modbus_parameters = {
-            "voltage": (0x040002, 0.01),              # Register address, scale
-            "current": (0x040003, 1),
-            "soc": (0x040004, 1),
-            "soh": (0x040005, 1),
-            "alarm_status": (0x040006, 1),
-            "protection_status": (0x040007, 1),
+            "voltage": 0x040002,              # Register address
+            "current": 0x040003,
+            "soc": 0x040004,
+            "soh": 0x040005,
+            "alarm_status": 0x040006,
+            "protection_status": 0x040007,
         }
 
     def test_connection(self):
@@ -53,12 +53,20 @@ class SamsungELPM482(Battery):
         self.protection_status = self.get_protection_status()
 
     def read_value(self, param):
-        """Reads a parameter value from Modbus using the read_serial_data utility."""
+        """Reads a parameter value from Modbus using the read_serial_data utility and applies scaling directly."""
         if param in self.modbus_parameters:
-            register, scale = self.modbus_parameters[param]
-            raw_value = read_serial_data(self.port, register)  # Use read_serial_data from utils
+            register = self.modbus_parameters[param]
+            raw_value = read_serial_data(self.port, register)
             if raw_value is not None:
-                return raw_value * scale
+                # Apply scaling based on parameter type
+                if param == "voltage":
+                    return raw_value / 100  # Convert from centivolts to volts
+                elif param == "current":
+                    return raw_value  # No scaling needed
+                elif param in ["soc", "soh"]:
+                    return raw_value  # SOC and SOH are typically in percentage, no scaling needed
+                else:
+                    return raw_value
             else:
                 print(f"Failed to read {param} from register {register}")
                 return None
