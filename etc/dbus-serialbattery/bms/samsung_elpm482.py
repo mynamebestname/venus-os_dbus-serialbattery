@@ -2,8 +2,7 @@
 # BMS class implementation for Samsung ELPM482-00005 battery
 
 from .battery import Battery
-from utils import read_modbus_register, read_can_value
-import struct
+from utils import read_serial_data
 
 class SamsungELPM482(Battery):
     def __init__(self, port, baudrate=9600, data_format="8N1"):
@@ -20,22 +19,14 @@ class SamsungELPM482(Battery):
         self.max_charge_current = 141  # 47A per battery × 3
         self.max_discharge_current = 150  # Max discharge current for 3 batteries
 
-        # Initialize battery parameters
-        self.voltage = None
-        self.current = None
-        self.soc = None
-        self.soh = None
-        self.alarm_status = None
-        self.protection_status = None
-
         # Modbus register mappings based on the manual
         self.modbus_parameters = {
-            "voltage": (0x040002, "U16", 0.01),              # Register address, type, scale
-            "current": (0x040003, "S16", 1),
-            "soc": (0x040004, "U16", 1),
-            "soh": (0x040005, "U16", 1),
-            "alarm_status": (0x040006, "U16", 1),
-            "protection_status": (0x040007, "U16", 1),
+            "voltage": (0x040002, 0.01),              # Register address, scale
+            "current": (0x040003, 1),
+            "soc": (0x040004, 1),
+            "soh": (0x040005, 1),
+            "alarm_status": (0x040006, 1),
+            "protection_status": (0x040007, 1),
         }
 
     def test_connection(self):
@@ -62,10 +53,15 @@ class SamsungELPM482(Battery):
         self.protection_status = self.get_protection_status()
 
     def read_value(self, param):
-        """Reads a parameter value from Modbus."""
+        """Reads a parameter value from Modbus using the read_serial_data utility."""
         if param in self.modbus_parameters:
-            register, data_type, scale = self.modbus_parameters[param]
-            return read_modbus_register(self.port, register, data_type, scale)
+            register, scale = self.modbus_parameters[param]
+            raw_value = read_serial_data(self.port, register)  # Use read_serial_data from utils
+            if raw_value is not None:
+                return raw_value * scale
+            else:
+                print(f"Failed to read {param} from register {register}")
+                return None
         else:
             print(f"Parameter {param} not found.")
             return None
