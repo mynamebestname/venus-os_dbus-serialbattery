@@ -23,13 +23,13 @@ echo
 echo -n "Fetch current version numbers..."
 
 # mr-manuel stable
-latest_release_mrmanuel_stable=$(curl -s https://api.github.com/repos/mr-manuel/venus-os_dbus-serialbattery/releases/latest | grep "tag_name" | cut -d : -f 2,3 | tr -d "\ " | tr -d \" | tr -d \,)
+latest_release_mrmanuel_stable=$(curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery/releases/latest | grep "tag_name" | cut -d : -f 2,3 | tr -d "\ " | tr -d \" | tr -d \,)
 
 # mr-manuel beta
-latest_release_mrmanuel_beta=$(curl -s https://api.github.com/repos/mr-manuel/venus-os_dbus-serialbattery/releases | grep "tag_name.*beta" | cut -d : -f 2,3 | tr -d "\ " | tr -d \" | tr -d \, | head -n 1)
+latest_release_mrmanuel_beta=$(curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery/releases | grep "tag_name.*beta" | cut -d : -f 2,3 | tr -d "\ " | tr -d \" | tr -d \, | head -n 1)
 
 # mr-manuel master branch
-latest_release_mrmanuel_nightly=$(curl -s https://raw.githubusercontent.com/mr-manuel/venus-os_dbus-serialbattery/master/etc/dbus-serialbattery/utils.py | grep DRIVER_VERSION | awk -F'"' '{print "v" $2}')
+latest_release_mrmanuel_nightly=$(curl -s https://raw.githubusercontent.com/mynamebestname/venus-os_dbus-serialbattery/master/etc/dbus-serialbattery/utils.py | grep DRIVER_VERSION | awk -F'"' '{print "v" $2}')
 
 # done
 echo " done."
@@ -97,13 +97,13 @@ echo ""
 ## latest release (mr-manuel, most up to date)
 if [ "$version" = "latest release \"$latest_release_mrmanuel_stable\" (mr-manuel's repo, stable, most up to date)" ]; then
     # download latest release
-    curl -s https://api.github.com/repos/mr-manuel/venus-os_dbus-serialbattery/releases/latest | grep "browser_download_url.*gz" | cut -d : -f 2,3 | tr -d \" | wget -O /tmp/venus-data.tar.gz -qi -
+    curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery/releases/latest | grep "browser_download_url.*gz" | cut -d : -f 2,3 | tr -d \" | wget -O /tmp/venus-data.tar.gz -qi -
 fi
 
 ## beta release (mr-manuel, most up to date)
 if [ "$version" = "beta build \"$latest_release_mrmanuel_beta\" (mr-manuel's repo, no errors after 72 h runtime, long time testing needed)" ]; then
     # download beta release
-    curl -s https://api.github.com/repos/mr-manuel/venus-os_dbus-serialbattery/releases/tags/$latest_release_mrmanuel_beta | grep "browser_download_url.*gz" | cut -d : -f 2,3 | tr -d \" | wget -O /tmp/venus-data.tar.gz -qi -
+    curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery/releases/tags/$latest_release_mrmanuel_beta | grep "browser_download_url.*gz" | cut -d : -f 2,3 | tr -d \" | wget -O /tmp/venus-data.tar.gz -qi -
 fi
 
 ## specific version
@@ -158,7 +158,7 @@ if [ "$version" = "nightly build \"$latest_release_mrmanuel_nightly\" (mr-manuel
     if [ "$version" = "specific branch (mr-manuel's repo, specific feature testing)" ]; then
 
         # fetch branches from Github
-        branches=$(curl -s https://api.github.com/repos/mr-manuel/venus-os_dbus-serialbattery/branches | grep "name" | cut -d : -f 2,3 | tr -d \" | tr -d \, | grep -v "docusaurus")
+        branches=$(curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery/branches | grep "name" | cut -d : -f 2,3 | tr -d \" | tr -d \, | grep -v "docusaurus")
 
         # create a select menu
         echo
