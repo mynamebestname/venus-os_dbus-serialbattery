@@ -22,13 +22,13 @@ echo
 # fetch version numbers for different versions
 echo -n "Fetch current version numbers..."
 
-# mr-manuel stable
+# mynamebestname stable
 latest_release_mrmanuel_stable=$(curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery/releases/latest | grep "tag_name" | cut -d : -f 2,3 | tr -d "\ " | tr -d \" | tr -d \,)
 
-# mr-manuel beta
+# mynamebestname beta
 latest_release_mrmanuel_beta=$(curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery/releases | grep "tag_name.*beta" | cut -d : -f 2,3 | tr -d "\ " | tr -d \" | tr -d \, | head -n 1)
 
-# mr-manuel master branch
+# mynamebestname master branch
 latest_release_mrmanuel_nightly=$(curl -s https://raw.githubusercontent.com/mynamebestname/venus-os_dbus-serialbattery/master/etc/dbus-serialbattery/utils.py | grep DRIVER_VERSION | awk -F'"' '{print "v" $2}')
 
 # done
@@ -50,10 +50,10 @@ PS3=$'\nSelect which version you want to install and enter the corresponding num
 
 # create list of versions
 version_list=(
-    "latest release \"$latest_release_mrmanuel_stable\" (mr-manuel's repo, stable, most up to date)"
-    "beta build \"$latest_release_mrmanuel_beta\" (mr-manuel's repo, no errors after 72 h runtime, long time testing needed)"
-    "nightly build \"$latest_release_mrmanuel_nightly\" (mr-manuel's repo, newest features and fixes, bugs possible)"
-    "specific branch (mr-manuel's repo, specific feature testing)"
+    "latest release \"$latest_release_mrmanuel_stable\" (mynamebestname's repo, stable, most up to date)"
+    "beta build \"$latest_release_mrmanuel_beta\" (mynamebestname's repo, no errors after 72 h runtime, long time testing needed)"
+    "nightly build \"$latest_release_mrmanuel_nightly\" (mynamebestname's repo, newest features and fixes, bugs possible)"
+    "specific branch (mynamebestname's repo, specific feature testing)"
     "specific version"
     "local tar file"
     "quit"
@@ -62,16 +62,16 @@ version_list=(
 select version in "${version_list[@]}"
 do
     case $version in
-        "latest release \"$latest_release_mrmanuel_stable\" (mr-manuel's repo, stable, most up to date)")
+        "latest release \"$latest_release_mrmanuel_stable\" (mynamebestname's repo, stable, most up to date)")
             break
             ;;
-        "beta build \"$latest_release_mrmanuel_beta\" (mr-manuel's repo, no errors after 72 h runtime, long time testing needed)")
+        "beta build \"$latest_release_mrmanuel_beta\" (mynamebestname's repo, no errors after 72 h runtime, long time testing needed)")
             break
             ;;
-        "nightly build \"$latest_release_mrmanuel_nightly\" (mr-manuel's repo, newest features and fixes, bugs possible)")
+        "nightly build \"$latest_release_mrmanuel_nightly\" (mynamebestname's repo, newest features and fixes, bugs possible)")
             break
             ;;
-        "specific branch (mr-manuel's repo, specific feature testing)")
+        "specific branch (mynamebestname's repo, specific feature testing)")
             break
             ;;
         "specific version")
@@ -94,14 +94,14 @@ echo ""
 
 
 
-## latest release (mr-manuel, most up to date)
-if [ "$version" = "latest release \"$latest_release_mrmanuel_stable\" (mr-manuel's repo, stable, most up to date)" ]; then
+## latest release (mynamebestname, most up to date)
+if [ "$version" = "latest release \"$latest_release_mrmanuel_stable\" (mynamebestname's repo, stable, most up to date)" ]; then
     # download latest release
     curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery/releases/latest | grep "browser_download_url.*gz" | cut -d : -f 2,3 | tr -d \" | wget -O /tmp/venus-data.tar.gz -qi -
 fi
 
-## beta release (mr-manuel, most up to date)
-if [ "$version" = "beta build \"$latest_release_mrmanuel_beta\" (mr-manuel's repo, no errors after 72 h runtime, long time testing needed)" ]; then
+## beta release (mynamebestname, most up to date)
+if [ "$version" = "beta build \"$latest_release_mrmanuel_beta\" (mynamebestname's repo, no errors after 72 h runtime, long time testing needed)" ]; then
     # download beta release
     curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery/releases/tags/$latest_release_mrmanuel_beta | grep "browser_download_url.*gz" | cut -d : -f 2,3 | tr -d \" | wget -O /tmp/venus-data.tar.gz -qi -
 fi
@@ -130,7 +130,7 @@ fi
 
 
 ## extract the tar file
-if [ "$version" = "latest release \"$latest_release_mrmanuel_stable\" (mr-manuel's repo, stable, most up to date)" ] || [ "$version" = "beta build \"$latest_release_mrmanuel_beta\" (mr-manuel's repo, no errors after 72 h runtime, long time testing needed)" ] || [ "$version" = "specific version" ] || [ "$version" = "local tar file" ]; then
+if [ "$version" = "latest release \"$latest_release_mrmanuel_stable\" (mynamebestname's repo, stable, most up to date)" ] || [ "$version" = "beta build \"$latest_release_mrmanuel_beta\" (mynamebestname's repo, no errors after 72 h runtime, long time testing needed)" ] || [ "$version" = "specific version" ] || [ "$version" = "local tar file" ]; then
 
     # extract driver
     if [ -f "/tmp/venus-data.tar.gz" ]; then
@@ -151,11 +151,11 @@ fi
 
 
 ## nightly builds
-if [ "$version" = "nightly build \"$latest_release_mrmanuel_nightly\" (mr-manuel's repo, newest features and fixes, bugs possible)" ] || [ "$version" = "specific branch (mr-manuel's repo, specific feature testing)" ]; then
+if [ "$version" = "nightly build \"$latest_release_mrmanuel_nightly\" (mynamebestname's repo, newest features and fixes, bugs possible)" ] || [ "$version" = "specific branch (mynamebestname's repo, specific feature testing)" ]; then
 
     cd /tmp
 
-    if [ "$version" = "specific branch (mr-manuel's repo, specific feature testing)" ]; then
+    if [ "$version" = "specific branch (mynamebestname's repo, specific feature testing)" ]; then
 
         # fetch branches from Github
         branches=$(curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery/branches | grep "name" | cut -d : -f 2,3 | tr -d \" | tr -d \, | grep -v "docusaurus")
@@ -185,7 +185,7 @@ if [ "$version" = "nightly build \"$latest_release_mrmanuel_nightly\" (mr-manuel
     rm -rf /tmp/venus-os_dbus-serialbattery-$branch
 
     # download driver
-    wget -O $branch.zip https://github.com/mr-manuel/venus-os_dbus-serialbattery/archive/refs/heads/$branch.zip
+    wget -O $branch.zip https://github.com/mynamebestname/venus-os_dbus-serialbattery/archive/refs/heads/$branch.zip
     if [ $? -ne 0 ]; then
         echo "Error during downloading the ZIP file. Please try again."
         # restore config.ini

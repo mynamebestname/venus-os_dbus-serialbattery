@@ -560,7 +560,7 @@ echo "                 and add them to \"/data/etc/dbus-serialbattery/config.ini
 echo
 echo
 echo "GUIv2: If you want to try the new GUIv2 follow this link:"
-echo "       https://github.com/mr-manuel/venus-os_dbus-serialbattery/tree/master/gui-v2"
+echo "       https://github.com/mynamebestname/venus-os_dbus-serialbattery/tree/master/gui-v2"
 echo
 echo
 # print which version was installed

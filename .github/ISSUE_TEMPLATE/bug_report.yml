@@ -15,9 +15,9 @@ body:
 
         * Please carefully read all the instructions below including the descriptions! Very often we have to request the data again, because it was not provided in the first place.
 
-        * Please try the `nightly` build first, if you are not already using it. It's very likely that the bug is already fixed. See [here](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/general/install#nightly-build) how to install it.
+        * Please try the `nightly` build first, if you are not already using it. It's very likely that the bug is already fixed. See [here](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/general/install#nightly-build) how to install it.
 
-        * Please read the complete [changelog](https://github.com/mr-manuel/dbus-serialbattery/blob/master/CHANGELOG.md).
+        * Please read the complete [changelog](https://github.com/mynamebestname/dbus-serialbattery/blob/master/CHANGELOG.md).
 
   - type: textarea
     id: description
@@ -56,7 +56,7 @@ body:
     attributes:
       label: Driver version of the currently installed driver
       description: |
-        Visible in the [driver log files](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/troubleshoot/#driver-log-files) or in the remote console/GUI under `SerialBattery` -> `Device` -> `Firmware version`.
+        Visible in the [driver log files](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/troubleshoot/#driver-log-files) or in the remote console/GUI under `SerialBattery` -> `Device` -> `Firmware version`.
 
         ⚠️ **IMPORTANT:** Do not write `latest` and specify the exact version number, else we cannot help you.
       placeholder: e.g. v1.0.20230927beta
@@ -113,7 +113,7 @@ body:
       label: BMS type
       description: Select your used BMS type.
       multiple: true
-      # https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/general/supported-bms
+      # https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/general/supported-bms
       options:
         - ANT BMS
         - Daly BMS
@@ -169,7 +169,7 @@ body:
     attributes:
       label: Config file
       description: |
-        Paste your `config.ini` file here. See [here](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/general/install#settings-locationpath) where you can find it. DO NOT COPY the `config.default.ini` here. The content will be automatically formatted into code, so no need for backticks.
+        Paste your `config.ini` file here. See [here](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/general/install#settings-locationpath) where you can find it. DO NOT COPY the `config.default.ini` here. The content will be automatically formatted into code, so no need for backticks.
       render: ini
     validations:
       required: true
@@ -179,7 +179,7 @@ body:
     attributes:
       label: Relevant log output
       description: |
-        Please copy and paste any relevant log output here. See [here](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/troubleshoot/#driver-log-files) how to get the driver log files. The content will be automatically formatted into code, so no need for backticks.
+        Please copy and paste any relevant log output here. See [here](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/troubleshoot/#driver-log-files) how to get the driver log files. The content will be automatically formatted into code, so no need for backticks.
 
         ⚠️ **IMPORTANT:** Do not forget to pipe the output through `tai64nlocal`, if you don't copy the commands from the documentation.
       render: shell

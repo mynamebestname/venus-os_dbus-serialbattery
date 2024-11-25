@@ -13,9 +13,9 @@ body:
 
         ## 🚨 IMPORTANT 🚨
 
-        * Please try the `nightly` build first, if you are not already using it. Maybe the feature was already developed. See [here](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/general/install#nightly-build) how to install it.
+        * Please try the `nightly` build first, if you are not already using it. Maybe the feature was already developed. See [here](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/general/install#nightly-build) how to install it.
 
-        * Please read the complete [changelog](https://github.com/mr-manuel/dbus-serialbattery/blob/master/CHANGELOG.md).
+        * Please read the complete [changelog](https://github.com/mynamebestname/dbus-serialbattery/blob/master/CHANGELOG.md).
 
   - type: textarea
     id: idea

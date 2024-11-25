@@ -207,7 +207,7 @@ fi
 if [ -f "/var/www/venus/gui-v2/commit-sha" ]; then
     # check if latest version is already installed
     hash_local=$(cat /var/www/venus/gui-v2/commit-sha)
-    hash_online=$(curl -s https://api.github.com/repos/mr-manuel/venus-os_dbus-serialbattery_gui-v2/commits?path=venus-webassembly.zip | grep "sha" | head -n 1 | cut -d : -f 2,3 | tr -d "\ " | tr -d \" | tr -d \,)
+    hash_online=$(curl -s https://api.github.com/repos/mynamebestname/venus-os_dbus-serialbattery_gui-v2/commits?path=venus-webassembly.zip | grep "sha" | head -n 1 | cut -d : -f 2,3 | tr -d "\ " | tr -d \" | tr -d \,)
 
     if [ "$hash_local" != "$hash_online" ]; then
         install_wasm=1
@@ -223,12 +223,12 @@ if [ $install_wasm -eq 1 ]; then
     echo ""
     echo "Installing GUIv2 WASM build..."
 
-    wget -q -O /tmp/venus-webassembly.zip https://raw.githubusercontent.com/mr-manuel/venus-os_dbus-serialbattery_gui-v2/master/venus-webassembly.zip
+    wget -q -O /tmp/venus-webassembly.zip https://raw.githubusercontent.com/mynamebestname/venus-os_dbus-serialbattery_gui-v2/master/venus-webassembly.zip
 
     # check if download was successful
     if [ ! -f "/tmp/venus-webassembly.zip" ]; then
         echo "** Download of GUIv2 failed! Skip installation. **"
-        echo "For offline installing see https://github.com/mr-manuel/venus-os_dbus-serialbattery_gui-v2"
+        echo "For offline installing see https://github.com/mynamebestname/venus-os_dbus-serialbattery_gui-v2"
     else
 
         unzip -o /tmp/venus-webassembly.zip -d /tmp > /dev/null

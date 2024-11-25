@@ -567,7 +567,7 @@ class LltJbd(Battery):
 
         # Some requested, that the SOC is calculated by using the cycle_capacity and capacity_remain
         # but this is not possible, because the values do not match and are very random
-        # See https://github.com/mr-manuel/venus-os_dbus-serialbattery/issues/47#issuecomment-2239210663
+        # See https://github.com/mynamebestname/venus-os_dbus-serialbattery/issues/47#issuecomment-2239210663
 
         # https://github.com/Louisvdw/dbus-serialbattery/issues/769#issuecomment-1720805325
         # if not self.cycle_capacity or self.cycle_capacity < capacity_remain:

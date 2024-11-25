@@ -2,13 +2,13 @@
 
 This driver is for Venus OS devices (any GX device sold by Victron or a Raspberry Pi running the Venus OS image).
 
-The driver will communicate with a Battery Management System (BMS) that support serial (RS232, RS485 or TTL UART) and Bluetooth communication (see [BMS feature comparison](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/general/features#bms-feature-comparison) for details). The data is then published to the Venus OS system (dbus). The main purpose is to act as a Battery Monitor in your GX and supply State of Charge (SoC) and other values to the inverter/charger.
+The driver will communicate with a Battery Management System (BMS) that support serial (RS232, RS485 or TTL UART) and Bluetooth communication (see [BMS feature comparison](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/general/features#bms-feature-comparison) for details). The data is then published to the Venus OS system (dbus). The main purpose is to act as a Battery Monitor in your GX and supply State of Charge (SoC) and other values to the inverter/charger.
 
 ## History
 
 The first version of this driver was released by [Louisvdw](https://github.com/Louisvdw/dbus-serialbattery) in September 2020.
 
-In February 2023 I ([mr-manuel](https://github.com/mr-manuel)) made my first PR, since Louis did not have time anymore to contribute to this project.
+In February 2023 I ([mynamebestname](https://github.com/mynamebestname)) made my first PR, since Louis did not have time anymore to contribute to this project.
 
 With the release of `v1.0.0` I became the main developer of this project. From then on, I have been maintaining the project and developing it further. I'm also solving 99% of the issues on GitHub.
 
@@ -23,13 +23,13 @@ If you are using this driver and you are happy with it, please make a donation t
 
 ## Documentation
 
-* [Introduction](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/)
-* [Features](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/general/features)
-* [Supported BMS](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/general/supported-bms)
-* [How to connect and prepare the battery/BMS](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/general/connect)
-* [How to install, update, disable, enable and uninstall](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/general/install)
-* [How to troubleshoot](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/troubleshoot/)
-* [FAQ](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/faq/)
+* [Introduction](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/)
+* [Features](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/general/features)
+* [Supported BMS](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/general/supported-bms)
+* [How to connect and prepare the battery/BMS](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/general/connect)
+* [How to install, update, disable, enable and uninstall](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/general/install)
+* [How to troubleshoot](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/troubleshoot/)
+* [FAQ](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/faq/)
 
 ### Developer Remarks
 
@@ -40,7 +40,7 @@ velib_python to the `PYTHONPATH` environment variable.
 
 Make sure the GitHub Actions run fine in your repository. In order to make the GitHub Actions run please select in your repository settings under `Actions` -> `General` -> `Actions permissions` the option `Allow all actions and reusable workflows`. Check also in your repository settings under `Actions` -> `General` -> `Workflow permissions` if `Read and write permissions` are selected. This will check your code for Flake8 and Black Lint errors. [Here](https://py-vscode.readthedocs.io/en/latest/files/linting.html) is a short instruction on how to set up Flake8 and Black Lint checks in VS Code. This will save you a lot of time.
 
-See this checklist, if you want to [add a new BMS](https://mr-manuel.github.io/venus-os_dbus-serialbattery_docs/general/supported-bms#add-by-opening-a-pull-request)
+See this checklist, if you want to [add a new BMS](https://mynamebestname.github.io/venus-os_dbus-serialbattery_docs/general/supported-bms#add-by-opening-a-pull-request)
 
 #### How it works
 
@@ -61,7 +61,7 @@ https://discord.gg/YXzFB8rSgx
 
 ## GUIv2
 
-To use dbus-serialbattery already with GUIv2 see here: https://github.com/mr-manuel/venus-os_dbus-serialbattery_gui-v2
+To use dbus-serialbattery already with GUIv2 see here: https://github.com/mynamebestname/venus-os_dbus-serialbattery_gui-v2
 
 ## Screenshots
 

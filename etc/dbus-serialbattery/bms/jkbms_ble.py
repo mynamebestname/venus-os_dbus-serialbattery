@@ -3,7 +3,7 @@
 # Notes
 # Added by https://github.com/baranator
 # https://github.com/Louisvdw/dbus-serialbattery/pull/372
-# Updated by https://github.com/mr-manuel
+# Updated by https://github.com/mynamebestname
 
 from battery import Battery, Cell
 from typing import Callable
