@@ -4,16 +4,17 @@
 from .battery import Battery
 from utils import read_serial_data
 
+
 class SamsungELPM482(Battery):
     def __init__(self, port, baudrate=9600, data_format="8N1"):
         super().__init__(port, baudrate, data_format)
-        
+
         # Battery configuration and specs
         self.type = "Samsung_ELPM482"
         self.capacity = 14.52  # Total capacity in kWh for 3 batteries in parallel (4.84 kWh each)
         self.nominal_voltage = 51.52  # Based on nominal battery voltage per manual
-        self.max_voltage = 58.1       # Max voltage from manual
-        self.min_voltage = 44.8       # Min discharge voltage from manual
+        self.max_voltage = 58.1  # Max voltage from manual
+        self.min_voltage = 44.8  # Min discharge voltage from manual
 
         # Battery current limits for 3 batteries in parallel
         self.max_charge_current = 141  # 47A per battery × 3
@@ -21,7 +22,7 @@ class SamsungELPM482(Battery):
 
         # Modbus register mappings without divisors
         self.modbus_parameters = {
-            "voltage": 0x040002,              # Register address
+            "voltage": 0x040002,  # Register address
             "current": 0x040003,
             "soc": 0x040004,
             "soh": 0x040005,
@@ -42,7 +43,7 @@ class SamsungELPM482(Battery):
         except Exception as e:
             print(f"Connection test failed with error: {e}")
             return False
-    
+
     def refresh_data(self):
         """Reads and updates all key battery parameters."""
         self.voltage = self.get_voltage()
@@ -77,7 +78,7 @@ class SamsungELPM482(Battery):
     def get_voltage(self):
         """Returns the current voltage of the battery."""
         return self.read_value("voltage")
-    
+
     def get_current(self):
         """Returns the current flowing in/out of the battery."""
         return self.read_value("current")
